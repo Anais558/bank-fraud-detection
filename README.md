@@ -6,8 +6,8 @@ dashboard de visualisation.
 
 ## Progression
 - [x] Génération de données de transactions simulées (avec fraude injectée)
-- [ ] Moteur de détection par règles métier
-- [ ] Scoring et priorisation des alertes
+- [x] Moteur de détection par règles métier (4 règles)
+- [x] Scoring et priorisation des alertes (Faible/Moyen/Élevé)
 - [ ] Dashboard de visualisation
 
 ## Structure du projet
