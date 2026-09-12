@@ -8,7 +8,7 @@ dashboard de visualisation.
 - [x] Génération de données de transactions simulées (avec fraude injectée)
 - [x] Moteur de détection par règles métier (4 règles)
 - [x] Scoring et priorisation des alertes (Faible/Moyen/Élevé)
-- [ ] Dashboard de visualisation
+- [x] Dashboard de visualisation
 
 ## Structure du projet
 - `src/` — scripts Python

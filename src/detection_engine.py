@@ -184,6 +184,21 @@ def classify_risk_level(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def run_all_rules(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Applique les 4 règles + le scoring, dans l'ordre, sur un dataframe
+    de transactions brutes. Fonction pratique réutilisée par le script
+    principal et par le générateur de dashboard.
+    """
+    client_stats = compute_client_stats(df)
+    df = rule_high_amount(df, client_stats)
+    df = rule_impossible_travel(df)
+    df = rule_odd_hour(df)
+    df = rule_high_frequency(df)
+    df = classify_risk_level(df)
+    return df
+
+
 if __name__ == "__main__":
     df = pd.read_csv("data/transactions.csv")
 

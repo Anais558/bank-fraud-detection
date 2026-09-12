@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard — Détection de fraude</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin: 2rem; background: #f5f6fa; color: #222; }
+  h1 { margin-bottom: 0.2rem; }
+  .subtitle { color: #666; margin-bottom: 2rem; }
+  .cards { display: flex; gap: 1rem; margin-bottom: 2rem; }
+  .card { background: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); flex: 1; }
+  .card .value { font-size: 2rem; font-weight: bold; }
+  .card .label { color: #666; font-size: 0.9rem; }
+  #chart-container { background: white; padding: 1.5rem; border-radius: 8px; max-width: 500px; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+  th { background: #2c3e50; color: white; }
+  tr:hover { background: #f9f9f9; }
+  .fraud-yes { color: #c0392b; font-weight: bold; }
+  .fraud-no { color: #27ae60; }
+</style>
+</head>
+<body>
+
+<h1>Dashboard — Détection de fraude transactionnelle</h1>
+<p class="subtitle">Top 30 alertes de niveau "Élevé", triées par score de risque</p>
+
+<div class="cards">
+  <div class="card"><div class="value">18760</div><div class="label">Transactions analysées</div></div>
+  <div class="card"><div class="value">1210</div><div class="label">Vraies fraudes (référence)</div></div>
+  <div class="card"><div class="value">674</div><div class="label">Alertes "Élevé"</div></div>
+</div>
+
+<div id="chart-container">
+  <canvas id="riskChart"></canvas>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Client</th><th>Date/Heure</th><th>Montant</th><th>Pays</th>
+      <th>Catégorie</th><th>Score</th><th>Vraie fraude ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>CUST0072</td><td>2026-08-23 21:00:17</td><td>45.85</td><td>CN</td><td>online_gaming</td><td>55</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0120</td><td>2026-08-25 21:45:04</td><td>3831.76</td><td>RU</td><td>clothing</td><td>50</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0091</td><td>2026-08-14 07:35:08</td><td>5372.28</td><td>MA</td><td>restaurant</td><td>50</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0181</td><td>2026-08-29 18:30:03</td><td>118.71</td><td>NG</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0180</td><td>2026-08-28 10:39:58</td><td>296.57</td><td>NG</td><td>travel</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0003</td><td>2026-09-01 12:11:51</td><td>80.32</td><td>ES</td><td>restaurant</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0186</td><td>2026-09-08 17:34:58</td><td>144.80</td><td>CN</td><td>fuel</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0186</td><td>2026-09-10 15:23:08</td><td>69.72</td><td>ES</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0188</td><td>2026-09-10 16:28:34</td><td>277.38</td><td>ES</td><td>jewelry</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0169</td><td>2026-08-16 15:59:49</td><td>139.32</td><td>RU</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0173</td><td>2026-08-24 17:17:12</td><td>273.19</td><td>MA</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0168</td><td>2026-09-03 13:44:47</td><td>166.79</td><td>ES</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0185</td><td>2026-09-11 16:40:43</td><td>159.92</td><td>US</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0003</td><td>2026-08-23 14:29:37</td><td>76.36</td><td>NG</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0148</td><td>2026-08-17 13:12:24</td><td>153.40</td><td>FR</td><td>travel</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0142</td><td>2026-09-10 10:47:45</td><td>93.63</td><td>ES</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0144</td><td>2026-09-08 12:30:16</td><td>253.02</td><td>DE</td><td>grocery</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0143</td><td>2026-08-16 16:52:08</td><td>84.42</td><td>CN</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0016</td><td>2026-08-28 14:44:56</td><td>279.86</td><td>US</td><td>fuel</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0016</td><td>2026-08-31 10:11:03</td><td>254.88</td><td>CN</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0016</td><td>2026-08-31 10:52:47</td><td>208.60</td><td>US</td><td>electronics</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0137</td><td>2026-09-07 21:58:50</td><td>139.56</td><td>DE</td><td>grocery</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0139</td><td>2026-08-23 10:31:28</td><td>125.76</td><td>MA</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0137</td><td>2026-09-07 14:43:02</td><td>199.58</td><td>CN</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0129</td><td>2026-08-22 14:29:53</td><td>257.06</td><td>MA</td><td>cash_withdrawal</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0137</td><td>2026-09-07 21:39:44</td><td>199.58</td><td>NG</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0132</td><td>2026-08-17 18:04:41</td><td>70.95</td><td>RU</td><td>cash_withdrawal</td><td>40</td><td class='fraud-no'>Non</td></tr>
+<tr><td>CUST0122</td><td>2026-09-08 15:15:35</td><td>141.45</td><td>MA</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0161</td><td>2026-08-22 19:25:39</td><td>41.15</td><td>FR</td><td>cash_withdrawal</td><td>40</td><td class='fraud-yes'>Oui</td></tr>
+<tr><td>CUST0185</td><td>2026-09-11 19:04:14</td><td>162.42</td><td>RU</td><td>travel</td><td>40</td><td class='fraud-no'>Non</td></tr>
+  </tbody>
+</table>
+
+<script>
+const data = {
+  labels: ['Faible', 'Moyen', 'Élevé'],
+  datasets: [{
+    data: [17459, 627, 674],
+    backgroundColor: ['#27ae60', '#f39c12', '#c0392b']
+  }]
+};
+new Chart(document.getElementById('riskChart'), {
+  type: 'doughnut',
+  data: data,
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+
+</body>
+</html>
